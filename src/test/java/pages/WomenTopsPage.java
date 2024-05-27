@@ -27,9 +27,8 @@ public class WomenTopsPage extends AbstractPage {
         findElement(By.cssSelector("div.filter-options div[option-label='" + color + "']")).click();
     }
 
-
     @Step("Checking that each item is present in selected color")
-    public void checkEachItemIsInSelectedColor() {
+    public void assertEachItemIsInSelectedColor() {
         List<WebElement> selectedColor = driver.findElements(selectedColorLocator);
         selectedColor.forEach(element ->
                 assertTrue(element.getAttribute("class").contains("selected"),
@@ -43,7 +42,7 @@ public class WomenTopsPage extends AbstractPage {
     }
 
     @Step("Checking that prices are in selected price range")
-    public void checkPricesInRange(int minPrice, int maxPrice) {
+    public void assertPricesAreInSelectedRange(int minPrice, int maxPrice) {
         List<WebElement> productPrices = driver.findElements(filteredItemsPriceLocator);
         productPrices.forEach(priceElement -> {
             int priceValue = Integer.parseInt(priceElement.getAttribute("data-price-amount"));
@@ -58,7 +57,7 @@ public class WomenTopsPage extends AbstractPage {
     }
 
     @Step("Checking that prices are not in selected price range")
-    public void checkPricesNotInRange(int minPrice, int maxPrice) {
+    public void assertPriceFilterIsCleared(int minPrice, int maxPrice) {
         List<WebElement> productPrices = driver.findElements(filteredItemsPriceLocator);
         productPrices.forEach(priceElement -> {
             int priceValue = Integer.parseInt(priceElement.getAttribute("data-price-amount"));

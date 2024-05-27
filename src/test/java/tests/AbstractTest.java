@@ -12,7 +12,6 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import utils.ConfigReader;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,16 +24,28 @@ import java.util.concurrent.TimeUnit;
 public abstract class AbstractTest implements TestExecutionExceptionHandler {
 
     protected WebDriver driver;
-    ConfigReader configReader = new ConfigReader();
+    protected Properties envProperties;
 
     @BeforeEach
     public void setUp() {
         configureDriver();
+        envProperties = loadProperties(".env-test");
+    }
+
+    private Properties loadProperties(String filePath) {
+        Properties properties = new Properties();
+        try (FileInputStream fileInputStream = new FileInputStream(filePath)) {
+            properties.load(fileInputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return properties;
     }
 
     private void configureDriver() {
-        Properties properties = loadProperties();
-        String browser = properties.getProperty("browser", "chrome").toLowerCase();
+        Properties testProperties = loadProperties("src/test/resources/test.properties");
+
+        String browser = testProperties.getProperty("browser", "chrome").toLowerCase();
         switch (browser) {
             case "firefox":
                 WebDriverManager.firefoxdriver().setup();
@@ -53,22 +64,12 @@ public abstract class AbstractTest implements TestExecutionExceptionHandler {
                 driver = new ChromeDriver();
                 break;
         }
-        maximizeWindow();
+        maximizeWindow(testProperties.getProperty("url"));
     }
 
-    private Properties loadProperties() {
-        Properties properties = new Properties();
-        try (FileInputStream fileInputStream = new FileInputStream("src/test/resources/test.properties")) {
-            properties.load(fileInputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return properties;
-    }
-
-    private void maximizeWindow() {
+    private void maximizeWindow(String url) {
         driver.manage().window().maximize();
-        driver.get(loadProperties().getProperty("url"));
+        driver.get(url);
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 
