@@ -8,9 +8,9 @@ import org.openqa.selenium.interactions.Actions;
 
 public class HomePage extends AbstractPage {
 
-    private final By signInBtnLocator = By.linkText("Sign In");
-    private final By topsLinkLocator = By.linkText("Tops");
-    private final By womenLinkLocator = By.xpath("//nav[@class='navigation']//span[contains(text(), 'Women')]");
+    private final By signInBtnLocator = By.cssSelector("header .authorization-link");
+    private final By topsLinkLocator = By.cssSelector("li.level1.nav-2-1");
+    private final By womenLinkLocator = By.cssSelector("nav a[href$='/women.html']");
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -18,14 +18,14 @@ public class HomePage extends AbstractPage {
 
     @Step("Going to Registration Page")
     public void openSignInPage() {
-        driver.findElement(signInBtnLocator).click();
+        clickElement(signInBtnLocator);
     }
 
     @Step("Going to Women Tops Page")
     public void clickWomenTops() {
         Actions actions = new Actions(driver);
         actions.moveToElement(driver.findElement(womenLinkLocator)).perform();
-        driver.findElement(topsLinkLocator).click();
+        clickElement(topsLinkLocator);
     }
 }
 

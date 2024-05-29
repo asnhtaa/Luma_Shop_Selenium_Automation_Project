@@ -12,10 +12,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class WomenTopsPage extends AbstractPage {
 
     private final By colorFilterLocator = By.xpath("//div[@class='filter-options-title' and contains(text(), 'Color')]");
-    private final By selectedColorLocator = By.cssSelector("div[aria-label='Color'] div[option-label='Blue']");
+    private final By selectedColorLocator = By.cssSelector("[aria-label='Color'] [option-label='Blue']");
     private final By priceFilterLocator = By.xpath("//div[@class='filter-options-title' and contains(text(), 'Price')]");
-    private final By clearFilterLocator = By.cssSelector("a.action.filter-clear");
-    private final By filteredItemsPriceLocator = By.cssSelector("span.price-wrapper");
+    private final By clearFilterLocator = By.cssSelector(".filter-clear");
+    private final By filteredItemsPriceLocator = By.cssSelector(".price-wrapper");
 
     public WomenTopsPage(WebDriver driver) {
         super(driver);
@@ -23,8 +23,8 @@ public class WomenTopsPage extends AbstractPage {
 
     @Step("Filter items by color")
     public void filterItemsByColor(String color) {
-        findElement(colorFilterLocator).click();
-        findElement(By.cssSelector("div.filter-options div[option-label='" + color + "']")).click();
+        clickElement(colorFilterLocator);
+        clickElement(By.cssSelector("div.filter-options div[option-label='" + color + "']"));
     }
 
     @Step("Checking that each item is present in selected color")
@@ -37,8 +37,8 @@ public class WomenTopsPage extends AbstractPage {
 
     @Step("Filter items by price")
     public void filterItemsByPrice(String priceFilterValue) {
-        findElement(priceFilterLocator).click();
-        findElement(By.xpath("//div[@class='filter-options-content']//span[text()='" + priceFilterValue + "']")).click();
+        clickElement(priceFilterLocator);
+        clickElement(By.xpath("//div[@class='filter-options-content']//span[text()='" + priceFilterValue + "']"));
     }
 
     @Step("Checking that prices are in selected price range")
@@ -53,7 +53,7 @@ public class WomenTopsPage extends AbstractPage {
 
     @Step("Clicking 'Clear all' filters")
     public void clickClearAll() {
-        findElement(clearFilterLocator).click();
+        clickElement(clearFilterLocator);
     }
 
     @Step("Checking that prices are not in selected price range")
