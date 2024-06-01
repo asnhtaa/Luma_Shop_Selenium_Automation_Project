@@ -8,7 +8,7 @@ import pages.WomenTopsPage;
 
 public class FilterItemsTests extends AbstractTest {
 
-    @DisplayName("Check the functionality of filtering clothes by color")
+    @DisplayName("When the user applies a color filter, only items matching the selected color are displayed")
     @Test
     void filterItemsByColorTest() {
         HomePage homePage = new HomePage(driver);
@@ -28,7 +28,7 @@ public class FilterItemsTests extends AbstractTest {
         womenTopsPage.assertEachItemIsInSelectedColor();
     }
 
-    @DisplayName("Check the functionality of filtering clothes by price")
+    @DisplayName("When the user applies a price filter, only items within the specified price range are displayed")
     @Test
     void filterItemsByPriceTest() {
         HomePage homePage = new HomePage(driver);
@@ -43,12 +43,14 @@ public class FilterItemsTests extends AbstractTest {
 
         WomenTopsPage womenTopsPage = new WomenTopsPage(driver);
 
+        womenTopsPage.assertPricesAreNotInRange(60, 69);
+
         womenTopsPage.filterItemsByPrice("$60.00");
 
         womenTopsPage.assertPricesAreInSelectedRange(60, 69);
     }
 
-    @DisplayName("Check the functionality of clearing filters")
+    @DisplayName("When the user clears the price filter, items outside the previous price range are displayed")
     @Test
     void clearFilterFunctionalityTest() {
         HomePage homePage = new HomePage(driver);
@@ -63,12 +65,14 @@ public class FilterItemsTests extends AbstractTest {
 
         WomenTopsPage womenTopsPage = new WomenTopsPage(driver);
 
+        womenTopsPage.assertPricesAreNotInRange(60, 69);
+
         womenTopsPage.filterItemsByPrice("$60.00");
 
         womenTopsPage.assertPricesAreInSelectedRange(60, 69);
 
         womenTopsPage.clickClearAll();
 
-        womenTopsPage.assertPriceFilterIsCleared(60, 69);
+        womenTopsPage.assertPricesAreNotInRange(60, 69);
     }
 }

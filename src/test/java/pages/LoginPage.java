@@ -7,8 +7,8 @@ import org.openqa.selenium.WebDriver;
 public class LoginPage extends AbstractPage {
 
     private final By emailLocator = By.cssSelector("input#email");
-    private final By passwordLocator = By.cssSelector("input#pass");
-    private final By signInBtnLocator = By.cssSelector("button.action.login");
+    private final By passwordLocator = By.cssSelector("[title='Password']");
+    private final By signInBtnLocator = By.cssSelector("button.login");
 
     public LoginPage(WebDriver driver) {
         super(driver);
@@ -16,17 +16,17 @@ public class LoginPage extends AbstractPage {
 
     @Step("Entering user email {value}")
     public void enterEmail(String value) {
-        findElement(emailLocator).sendKeys(value);
+        fillElementWithValue(emailLocator, value);
     }
 
     @Step("Entering user password {value}")
     public void enterPassword(String value) {
-        findElement(passwordLocator).sendKeys(value);
+        fillElementWithValue(passwordLocator, value);
     }
 
     @Step("Clicking sign in button")
     public void clickSignInBtn() {
-        findElement(signInBtnLocator).click();
+        clickElement(signInBtnLocator);
     }
 
     @Step("Logging in")
